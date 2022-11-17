@@ -17,6 +17,9 @@ import mlflow.sklearn
 
 import logging
 
+mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_experiment("my-experiment")
+
 logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
 
