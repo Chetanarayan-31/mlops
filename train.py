@@ -20,7 +20,7 @@ import mlflow.onnx
 import logging
 
 mlflow.set_tracking_uri("http://localhost:5000")
-mlflow.set_experiment("red-wine-quality-detection")
+mlflow.set_experiment("wine-quality-detection")
 
 logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
@@ -102,7 +102,7 @@ if __name__ == "__main__":
             # There are other ways to use the Model Registry, which depends on the use case,
             # please refer to the doc for more information:
             # https://mlflow.org/docs/latest/model-registry.html#api-workflow
-            mlflow.onnx.log_model(onx, "model", registered_model_name="onxx-wine-quality-model", signature=model_signature)
-            # mlflow.sklearn.log_model(lr, "model", registered_model_name="sklearn-wine-quality-model", signature=model_signature)            
+            # mlflow.onnx.log_model(onx, "model", registered_model_name="onnx-wine-quality-model", signature=model_signature)
+            mlflow.sklearn.log_model(lr, "model", registered_model_name="sklearn-wine-quality-model", signature=model_signature)            
         else:
             mlflow.sklearn.log_model(lr, "model", signature=model_signature)
