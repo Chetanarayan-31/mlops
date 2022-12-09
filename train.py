@@ -91,7 +91,7 @@ if __name__ == "__main__":
         from skl2onnx import convert_sklearn
         from skl2onnx.common.data_types import FloatTensorType
         initial_type = [('float_input', FloatTensorType([None, 11]))]
-        onx = convert_sklearn(lr, initial_types=initial_type)       
+        onx = convert_sklearn(lr, initial_types=initial_type)         
 
         print("sklear model converted to onxx")   
 
