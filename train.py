@@ -93,7 +93,7 @@ if __name__ == "__main__":
         initial_type = [('float_input', FloatTensorType([None, 11]))]
         onx = convert_sklearn(lr, initial_types=initial_type)       
 
-        print("sklear model converted to onxx")        
+        print("sklear model converted to onxx")   
 
         # Model registry does not work with file store
         if tracking_url_type_store != "file":
