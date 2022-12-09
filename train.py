@@ -20,7 +20,7 @@ import mlflow.onnx
 import logging
 
 mlflow.set_tracking_uri("http://localhost:5000")
-mlflow.set_experiment("red-wine-quality-identification")
+mlflow.set_experiment("red-wine-quality-detection")
 
 logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
@@ -86,7 +86,7 @@ if __name__ == "__main__":
         print("  tracking_url_type_store: %s" % tracking_url_type_store)
 
         # Convert into ONNX format
-        print("Converting sklearn model to ONNX format")
+        print("Converting sklearn model to ONNX format") 
 
         from skl2onnx import convert_sklearn
         from skl2onnx.common.data_types import FloatTensorType
