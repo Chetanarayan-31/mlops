@@ -14,11 +14,13 @@ from sklearn.linear_model import ElasticNet
 from urllib.parse import urlparse
 import mlflow
 import mlflow.sklearn
+from mlflow.models.signature import infer_signature
+import mlflow.onnx
 
 import logging
 
 mlflow.set_tracking_uri("http://localhost:5000")
-mlflow.set_experiment("my-experiment")
+mlflow.set_experiment("red-wine-quality-identification")
 
 logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
@@ -77,7 +79,21 @@ if __name__ == "__main__":
         mlflow.log_metric("r2", r2)
         mlflow.log_metric("mae", mae)
 
+        mlflow.set_experiment_tag("fmk", "ONNX")
+
         tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
+        model_signature = infer_signature(train_x, train_y)
+        print("  tracking_url_type_store: %s" % tracking_url_type_store)
+
+        # Convert into ONNX format
+        print("Converting sklearn model to ONNX format")
+
+        from skl2onnx import convert_sklearn
+        from skl2onnx.common.data_types import FloatTensorType
+        initial_type = [('float_input', FloatTensorType([None, 11]))]
+        onx = convert_sklearn(lr, initial_types=initial_type)       
+
+        print("sklear model converted to onxx")        
 
         # Model registry does not work with file store
         if tracking_url_type_store != "file":
@@ -86,6 +102,7 @@ if __name__ == "__main__":
             # There are other ways to use the Model Registry, which depends on the use case,
             # please refer to the doc for more information:
             # https://mlflow.org/docs/latest/model-registry.html#api-workflow
-            mlflow.sklearn.log_model(lr, "model", registered_model_name="ElasticnetWineModel")
+            mlflow.onnx.log_model(onx, "model", registered_model_name="onxx-wine-quality-model", signature=model_signature)
+            # mlflow.sklearn.log_model(lr, "model", registered_model_name="sklearn-wine-quality-model", signature=model_signature)            
         else:
-            mlflow.sklearn.log_model(lr, "model")
+            mlflow.sklearn.log_model(lr, "model", signature=model_signature)
